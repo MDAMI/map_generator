@@ -8,7 +8,14 @@ def hello_world():
     return 'Hello, World!'
 
 class hexMap(object):
-    terrainID = {1: "plain", 2: "scrub", 3: "forest", 4: "rough", 5: "desert", 6: "hills", 7: "mountains", 8: "marsh", 9: "pond", 10: "depression"}
+    terrainName = {1: "plain", 2: "scrub", 3: "forest", 4: "rough", 5: "desert",
+                6: "hills", 7: "mountains", 8: "marsh", 9: "pond",
+                10: "depression"}
+
+    terrainID = {"plain": 1, "scrub": 2, "forest": 3, "rough": 4, "desert": 5,
+                "hills": 6, "mountains": 7, "marsh": 8, "pond": 9,
+                "depression": 10}
+
     chances = [ [11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
                 [3, 11, 13, 14, 15, 16, 17, 18, 19, 20],
                 [1, 4, 14, 15, 0, 16, 17, 18, 19, 20],
@@ -23,8 +30,6 @@ class hexMap(object):
 
     def assign(self, row, col, prev):
         rand = random.randint(1,20)
-        print rand
-        print self.chances[prev-1]
         index = 0
         x = False
         while x == False:
@@ -32,15 +37,23 @@ class hexMap(object):
                 index += 1;
             else:
                 x = True
-        self.mapArray[row][col] = self.terrainID.get(index+1)
+        self.mapArray[row][col] = self.terrainName.get(index+1)
 
     def fillMap(self):
         filled = False
         row = len(self.mapArray)/2;
         col = len(self.mapArray[0])/2;
+        self.mapArray[row][col] = self.terrainName.get(random.randint(1,8))
         while filled == False:
-            neighbors = findEmptyNeighbors();
-            #TODO Finish this
+            neighbors = self.findEmptyNeighbors(row, col);
+            if len(neighbors) != 0:
+                coords = neighbors[random.randint(0,len(neighbors)-1)]
+                prev = self.terrainID.get(self.mapArray[row][col])
+                self.assign(coords[0], coords[1], prev)
+                row = coords[0]
+                col = coords[1]
+            else:
+                filled = True #TODO Replace this. This is for testing only
 
     def findNeighbors(self, row, col):
         nb = []
@@ -66,9 +79,9 @@ class hexMap(object):
                     nb.append((row+1, col-1))
         return nb
 
-        def findEmptyNiegbors(self, row, col):
-            nb = self.findNeighbors(row, col)
-            return [x for x in nb if self.mapArray[x[0]][x[1]] == "none"]
+    def findEmptyNeighbors(self, row, col):
+        nb = self.findNeighbors(row, col)
+        return [x for x in nb if self.mapArray[x[0]][x[1]] == "none"]
 
     def printMap(self):
         for arr in self.mapArray:
