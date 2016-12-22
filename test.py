@@ -1,7 +1,7 @@
-from app import hexMap
+from hexMap import hexMap
 import random
 
-mapObj = hexMap(5,5)
+mapObj = hexMap(12,6)
 mapObj.assign(2,2,10)
-#mapObj.fillMap()
+mapObj.fillMap()
 mapObj.printMap()
