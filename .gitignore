@@ -27,3 +27,4 @@ pip-delete-this-directory.txt
 
 #Node
 node_modules
+www/bundle.js
