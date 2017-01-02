@@ -3,7 +3,7 @@ var path = require('path');
 var config = {
   context: path.join(__dirname, 'src'),
   entry: [
-    './main.js',
+    './main.jsx',
   ],
   output: {
     path: path.join(__dirname, 'www'),
@@ -12,9 +12,16 @@ var config = {
   module: {
     loaders: [
       {
-        test: /\.js$/,
+        test: /\.(js|jsx)$/,
         exclude: /node_modules/,
         loaders: ['babel'],
+      },
+      {
+        test: /\.css$/,
+        loaders: [
+          'style?sourceMap',
+          'css?modules&importLoaders=1&localIdentName=[path]___[name]__[local]___[hash:base64:5]'
+        ]
       },
     ],
   },
@@ -27,6 +34,7 @@ var config = {
     root: [
       path.join(__dirname, 'node_modules'),
     ],
+    extensions: ['', '.js', '.jsx']
   },
 };
 module.exports = config;
